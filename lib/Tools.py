@@ -3,7 +3,6 @@ import cv2
 
 
 class ifChar:
-    # this function contains some operations used by various function in the code
     def __init__(self, cntr):
         self.contour = cntr
 
@@ -38,7 +37,6 @@ class PossiblePlate:
         self.strChars = ""
 
 
-# this function is a 'first pass' that does a rough check on a contour to see if it could be a char
 def checkIfChar(possibleChar):
     if (possibleChar.boundingRectArea > 80 and possibleChar.boundingRectWidth > 2
             and possibleChar.boundingRectHeight > 8 and 0.25 < possibleChar.aspectRatio < 1.0):
@@ -48,7 +46,6 @@ def checkIfChar(possibleChar):
         return False
 
 
-# check the center distance between characters
 def distanceBetweenChars(firstChar, secondChar):
     x = abs(firstChar.centerX - secondChar.centerX)
     y = abs(firstChar.centerY - secondChar.centerY)
@@ -56,19 +53,15 @@ def distanceBetweenChars(firstChar, secondChar):
     return math.sqrt((x ** 2) + (y ** 2))
 
 
-# use basic trigonometry (SOH CAH TOA) to calculate angle between chars
 def angleBetweenChars(firstChar, secondChar):
     adjacent = float(abs(firstChar.centerX - secondChar.centerX))
     opposite = float(abs(firstChar.centerY - secondChar.centerY))
 
-    # check to make sure we do not divide by zero if the center X positions are equal
-    # float division by zero will cause a crash in Python
     if adjacent != 0.0:
         angleInRad = math.atan(opposite / adjacent)
     else:
         angleInRad = 1.5708
 
-    # calculate angle in degrees
     angleInDeg = angleInRad * (180.0 / math.pi)
 
     return angleInDeg
